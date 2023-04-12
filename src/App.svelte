@@ -8,7 +8,7 @@
 <main>
   {#if menu === "mainMenu"}
     <div class="grid space-y-5">
-      <h1 class="font-mono uppercase font-bold text-green-500">Main Menu</h1>
+      <h1 class="font-mono uppercase font-bold text-green-500">Main Menu FSE Project</h1>
       <button on:click={() => (menu = "mazeGame")}>Maze Game</button>
       <button on:click={() => (menu = "dragGame")}>Drag Game</button>
     </div>
