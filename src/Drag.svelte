@@ -67,7 +67,7 @@ resetGame = p5.resetGame
   p5.loop();
 }
 
-    p5.draw = () => {
+p5.draw = () => {
 
  // draw function
  // Here, insert yout code of draw function "only"
@@ -166,7 +166,7 @@ class Shape {
     this.shape = shape;
   }
 
-  draw = () => {
+  draw() {
     p5.push();
     p5.fill(this.color);
     p5.noStroke();
@@ -250,7 +250,7 @@ class Container {
     this.color = color;
   }
 
-  draw = () => {
+  draw() {
     p5.push();
     p5.stroke(this.color);
     p5.strokeWeight(3);
