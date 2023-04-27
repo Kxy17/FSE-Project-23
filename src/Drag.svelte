@@ -1,5 +1,6 @@
 <script>
   import P5 from "p5-svelte";
+  let resetGame
   const sketch = (p5) => {
     let shapes = [];
     let containers = [];
@@ -7,7 +8,6 @@
     let offsetX, offsetY;
     let message = "";
     let shapesInContainers = [];
-    let startButton;
     let winningMessage = "";
 
     // your constants already has been declared by me .. 
@@ -18,32 +18,27 @@
 // set up function
 // Here, insert yout code of setup function "only"
 p5.createCanvas(600, 600);
-  startButton = p5.createButton("Start/Restart");
-  startButton.position(
-    p5.width / 2 - startButton.width / 2,
-    p5.height / 2 - startButton.height / 2
-  );
-  startButton.mousePressed(p5.resetGame);
-
-  shapes.push(new p5.Shape(p5.width / 2, p5.height - 200, "green", "star"));
-  shapes.push(new p5.Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
-  shapes.push(new p5.Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
+  shapes.push(new Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
+  shapes.push(new Shape(p5.width / 3, p5.height - 200, "lightblue", "circle"));
+  shapes.push(new Shape(p5.width / 2, p5.height - 200, "green", "star"));
+  shapes.push(new Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
+  shapes.push(new Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
   shapes.push(
-    new p5.Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
+    new Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
   );
 
   // Create containers
-  containers.push(new p5.Container(p5.width / 4, p5.height - 20, "green"));
-  containers.push(new p5.Container(p5.width / 2, p5.height - 20, "red"));
-  containers.push(new p5.Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
+  containers.push(new Container(p5.width / 4, p5.height - 20, "green"));
+  containers.push(new Container(p5.width / 2, p5.height - 20, "red"));
+  containers.push(new Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
 }
 
  p5.resetGame = () => {
   shapes = [];
-  p5.container1 = null;
-  p5.container2 = null;
-  p5.container3 = null;
-  p5.shapeBeingDragged = null;
+  p5.Container1 = null;
+  p5.Container2 = null;
+  p5.Container3 = null;
+  p5.ShapeBeingDragged = null;
   offsetX = 0;
   offsetY = 0;
   message = "";
@@ -52,21 +47,21 @@ p5.createCanvas(600, 600);
   shapesInContainers = [];
 
   // Create shapes
-  shapes.push(new p5.Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
-  shapes.push(new p5.Shape(p5.width / 3, p5.height - 200, "lightblue", "circle"));
-  shapes.push(new p5.Shape(p5.width / 2, p5.height - 200, "green", "star"));
-  shapes.push(new p5.Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
-  shapes.push(new p5.Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
+  shapes.push(new Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
+  shapes.push(new Shape(p5.width / 3, p5.height - 200, "lightblue", "circle"));
+  shapes.push(new Shape(p5.width / 2, p5.height - 200, "green", "star"));
+  shapes.push(new Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
+  shapes.push(new Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
   shapes.push(
-    new p5.Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
+    new Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
   );
 
 // Create containers
-  containers.push(new p5.Container(p5.width / 4, p5.height - 20, "green"));
-  containers.push(new p5.Container(p5.width / 2, p5.height - 20, "red"));
-  containers.push(new p5.Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
+  containers.push(new Container(p5.width / 4, p5.height - 20, "green"));
+  containers.push(new Container(p5.width / 2, p5.height - 20, "red"));
+  containers.push(new Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
 }
-
+resetGame = p5.resetGame
  p5.startGame = () => {
   p5.resetGame();
   p5.loop();
@@ -77,6 +72,8 @@ p5.createCanvas(600, 600);
  // draw function
  // Here, insert yout code of draw function "only"
 // Draw shapes
+p5.background("white")
+
 shapes.forEach((shape) => shape.draw());
 
 // Draw containers
@@ -286,12 +283,12 @@ class Container {
   }
   p5.endShape(p5.CLOSE);
 }
-
   };
 </script>
 
 <div class="touch-none">
-  <div>
+  <div class="gameCanvas">
     <P5 {sketch} />
   </div>
+  <button on:click={resetGame}>Start/Restart</button>
 </div>

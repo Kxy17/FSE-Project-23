@@ -3,11 +3,11 @@
   const sketch = (p5) => {
     let status = -1;
     let message = "";
-    let c;
+    let c, won;
+    let startButton;
 
     p5.setup = () => {
       p5.createCanvas(450, 400);
-
       p5.background("pink");
     };
 
@@ -76,6 +76,7 @@
       ) {
         c = "green";
         p5.noStroke();
+        won = true;
         message = "Congrats, You Win!";
       }
 

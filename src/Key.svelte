@@ -33,9 +33,11 @@ p5.setup = () => {
     isCorrect = false; // Reset the flag variable
     answer = String.fromCharCode(p5.random(65, 90)); // Generate a new random answer in uppercase
   } else if (p5.keyIsPressed && (p5.key.toUpperCase() === answer || p5.key.toLowerCase() === answer)) { // Check if the user has pressed the correct key (ignoring case)
+    if(isCorrect) return; //So the game does not display 'correct' when the click anywhere message is still up
     isCorrect = true; // Set the flag variable to true
     successMessageTime = 60; // Set the timer for success message to 60 frames (1 second)
   } else if (p5.keyIsPressed) { // Check if the user has pressed any key
+    if (isCorrect) return; // So the user does not accidentally press a key while he got the answer correct less than 60 frames (1 second) before
     p5.fill(255, 0, 0); // Set the fill color to red
     p5.text('Wrong key, please try again', p5.width/2, p5.height/2 + 50); // Display feedback message
     successMessageTime = 0; // Reset the timer for success message
@@ -51,10 +53,8 @@ p5.mouseClicked = () => {
   };
 
     </script>
-
-
-
-<main>
-<!-- Html -->
-
-    </main>
+<div class="touch-none">
+  <div>
+    <P5 {sketch} />
+  </div>
+</div>
