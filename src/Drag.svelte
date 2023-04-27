@@ -1,188 +1,292 @@
-
 <script>
   import P5 from "p5-svelte";
   const sketch = (p5) => {
-    let status = -1;
+    let shapes = [];
+    let containers = [];
+    let DraggedShape = null;
+    let offsetX, offsetY;
     let message = "";
-    let c;
+    let shapesInContainers = [];
+    let startButton;
+    let winningMessage = "";
+
+    // your constants already has been declared by me .. 
+    
 
     p5.setup = () => {
-      p5.createCanvas(450, 400);
+    
+// set up function
+// Here, insert yout code of setup function "only"
+p5.createCanvas(600, 600);
+  startButton = p5.createButton("Start/Restart");
+  startButton.position(
+    p5.width / 2 - startButton.width / 2,
+    p5.height / 2 - startButton.height / 2
+  );
+  startButton.mousePressed(p5.resetGame);
 
-      p5.background("pink");
-    };
+  shapes.push(new p5.Shape(p5.width / 2, p5.height - 200, "green", "star"));
+  shapes.push(new p5.Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
+  shapes.push(new p5.Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
+  shapes.push(
+    new p5.Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
+  );
+
+  // Create containers
+  containers.push(new p5.Container(p5.width / 4, p5.height - 20, "green"));
+  containers.push(new p5.Container(p5.width / 2, p5.height - 20, "red"));
+  containers.push(new p5.Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
+}
+
+ p5.resetGame = () => {
+  shapes = [];
+  p5.container1 = null;
+  p5.container2 = null;
+  p5.container3 = null;
+  p5.shapeBeingDragged = null;
+  offsetX = 0;
+  offsetY = 0;
+  message = "";
+  winningMessage = "";
+  p5.recordIfInside = [];
+  shapesInContainers = [];
+
+  // Create shapes
+  shapes.push(new p5.Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
+  shapes.push(new p5.Shape(p5.width / 3, p5.height - 200, "lightblue", "circle"));
+  shapes.push(new p5.Shape(p5.width / 2, p5.height - 200, "green", "star"));
+  shapes.push(new p5.Shape((2 * p5.width) / 3, p5.height - 200, "red", "square"));
+  shapes.push(new p5.Shape((5 * p5.width) / 6, p5.height - 200, "green", "rectangle"));
+  shapes.push(
+    new p5.Shape((7 * p5.width) / 8, p5.height - 200, "lightblue", "semicircle")
+  );
+
+// Create containers
+  containers.push(new p5.Container(p5.width / 4, p5.height - 20, "green"));
+  containers.push(new p5.Container(p5.width / 2, p5.height - 20, "red"));
+  containers.push(new p5.Container((3 * p5.width) / 4, p5.height - 20, "lightblue"));
+}
+
+ p5.startGame = () => {
+  p5.resetGame();
+  p5.loop();
+}
 
     p5.draw = () => {
-      // Reset background
-      if (p5.mouseX > 178 && p5.mouseX < 278 && p5.mouseY > 375 && p5.mouseY < 405) {
-        p5.background("pink");
+
+ // draw function
+ // Here, insert yout code of draw function "only"
+// Draw shapes
+shapes.forEach((shape) => shape.draw());
+
+// Draw containers
+containers.forEach((container) => container.draw());
+
+p5.textSize(20);
+p5.textAlign(p5.CENTER);
+p5.fill("black");
+p5.text(message, p5.width / 2, 70);
+p5.textSize(20);
+p5.textAlign(p5.CENTER);
+p5.fill("black");
+p5.text(winningMessage, p5.width / 2, 50);
+if (DraggedShape) {
+  DraggedShape.x = p5.mouseX + offsetX;
+  DraggedShape.y = p5.mouseY + offsetY;
+  }
+
+      };
+
+
+      p5.mousePressed = () => {
+  for (let i = 0; i < shapes.length; i++) {
+    if (shapes[i].contains(p5.mouseX, p5.mouseY)) {
+      DraggedShape = shapes[i];
+      offsetX = DraggedShape.x - p5.mouseX;
+      offsetY = DraggedShape.y - p5.mouseY;
+      break;
+    }
+  }
+}
+
+
+
+p5.mouseReleased = () => {
+  // Check if shape is dropped in container
+  if (!DraggedShape) {
+    return;
+  }
+
+  let inside = false;
+  let mtch = false;
+  for (let container of containers) {
+    if (container.contains(p5.mouseX, p5.mouseY)) {
+      inside = true;
+      mtch = container.color == DraggedShape.color;
+      break;
+    }
+  }
+
+  if (inside) {
+    if (mtch) {
+      if (shapesInContainers.includes(DraggedShape)) {
+        message = "Shape Already In Container";
+      } else {
+        shapesInContainers.push(DraggedShape);
+        message = "Match!";
       }
-
-      p5.noStroke();
-
-      // Starting area
-      p5.textSize(20);
-      p5.fill("skyblue");
-      p5.rect(165, 380, 70, 20);
-      p5.fill(0);
-      p5.text("Start", 178, 375, 100, 30);
-
-      // Ending area
-      p5.fill("lightgreen");
-      p5.rect(30, 0, 40, 30);
-      p5.fill(0);
-      p5.textSize(13);
-      p5.text("end", 39, 20);
-
-      p5.fill(0);
-
-      // Big Walls
-      p5.rect(155, 250, 10, 150); // V
-      p5.rect(235, 300, 10, 100); // V
-      p5.rect(235, 300, 200, 10); // H
-      p5.rect(155, 250, 250, 10); // H
-      p5.rect(400, 160, 10, 100); // V
-      p5.rect(430, 140, 10, 170); // V
-      p5.rect(320, 135, 120, 10); // H
-      p5.rect(320, 160, 90, 10); // H
-
-      p5.ellipse(250, 160, 85);
-      p5.ellipse(165, 100, 90);
-      p5.ellipse(150, 200, 97);
-
-      p5.rect(30, 160, 100, 10); // H
-      p5.rect(30, 0, 10, 160); // V
-      p5.rect(60, 0, 10, 130); // V
-      p5.rect(60, 130, 85, 10); // H
-
-      // Start playing
-
-      if (p5.mouseX > 178 && p5.mouseX < 278 && p5.mouseY > 375 && p5.mouseY < 405) {
-        status = 1;
-        message = "";
+    } else {
+      message = "Incorrect Match!";
+      if (shapesInContainers.includes(DraggedShape)) {
+        shapesInContainers = shapesInContainers.filter(
+          (x) => x != DraggedShape
+        );
       }
-      if (status == 1) {
-        p5.strokeWeight(3);
-        p5.stroke("skyblue");
-        p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
-      }
+    }
+  } else {
+    if (shapesInContainers.includes(DraggedShape)) {
+      shapesInContainers = shapesInContainers.filter((x) => x != DraggedShape);
+    }
+  }
 
-      // win case
+  if (shapesInContainers.length == 6) {
+    winningMessage = "Congratulations, you have won!";
+  } else {
+    let remainder = 6 - shapesInContainers.length;
+
+    winningMessage = "You have only " + remainder + " remaining";
+  }
+
+  DraggedShape = null;
+
+}
+
+class Shape {
+  constructor(x, y, color, shape) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.shape = shape;
+  }
+
+  draw = () => {
+    p5.push();
+    p5.fill(this.color);
+    p5.noStroke();
+    if (this.shape === "triangle") {
+      p5.triangle(
+        this.x - 20,
+        this.y + 20,
+        this.x,
+        this.y - 20,
+        this.x + 20,
+        this.y + 20
+      );
+    } else if (this.shape === "circle") {
+      p5.ellipse(this.x, this.y, 40, 40);
+    } else if (this.shape === "star") {
+      p5.star(this.x, this.y, 15, 30, 5);
+    } else if (this.shape === "square") {
+      p5.rect(this.x - 20, this.y - 20, 40, 40);
+    } else if (this.shape === "rectangle") {
+      p5.rect(this.x - 20, this.y - 10, 40, 20);
+    } else if (this.shape === "semicircle") {
+      p5.arc(this.x, this.y + 20, 40, 40, p5.PI, 0);
+    }
+
+    p5.pop();
+  }
+
+  contains(x, y) {
+    if (this.shape === "triangle") {
+      let d = p5.dist(x, y, this.x, this.y);
+      if (d < 30) {
+        return true;
+      }
+    } else if (this.shape === "circle") {
+      let d = p5.dist(x, y, this.x, this.y);
+      if (d < 20) {
+        return true;
+      }
+    } else if (this.shape === "star") {
       if (
-        status == 1 &&
-        p5.mouseX > 30 &&
-        p5.mouseX < 450 &&
-        p5.mouseY > 0 &&
-        p5.mouseY < 30
+        x > this.x - 20 &&
+        x < this.x + 20 &&
+        y > this.y - 20 &&
+        y < this.y + 20
       ) {
-        c = "green";
-        p5.noStroke();
-        message = "Congrats, You Win!";
+        return true;
       }
-
-      // lose cases
-
-      // outside canvas
-      if (p5.mouseX > p5.width || p5.mouseX < 0 || p5.mouseY > p5.height || p5.mouseY < 2) {
-        status = 0;
-        message = "Try again";
-        c = "red";
+    } else if (this.shape === "square") {
+      if (
+        x > this.x - 20 &&
+        x < this.x + 20 &&
+        y > this.y - 20 &&
+        y < this.y + 20
+      ) {
+        return true;
       }
-      if (p5.mouseX == 0 && p5.mouseY == 0) status = -1;
-
-      // p5.rect(155,250,10, 150);    // V
-      // p5.rect(155,250,10, 150);    // V
-      if (p5.mouseX > 155 && p5.mouseX < 165 && p5.mouseY > 250 && p5.mouseY < 400) {
-        status = 0;
-        message = "Try again";
-        c = "red";
+    } else if (this.shape === "rectangle") {
+      if (
+        x > this.x - 20 &&
+        x < this.x + 20 &&
+        y > this.y - 10 &&
+        y < this.y + 10
+      ) {
+        return true;
       }
-
-      // p5.rect(235,300,10, 100);    // V
-      // p5.rect(235,300,10, 100);    // V
-      if (p5.mouseX > 235 && p5.mouseX < 245 && p5.mouseY > 300 && p5.mouseY < 400) {
-        status = 0;
-        message = "Try again";
-        c = "red";
+    } else if (this.shape === "semicircle") {
+      let d = p5.dist(x, y, this.x, this.y + 20);
+      if (d < 30) {
+        return true;
       }
+    }
 
-      // p5.rect(235,300, 200, 10);   // H
-      // p5.rect(235,300, 200, 10);   // H
-      if (p5.mouseX > 235 && p5.mouseX < 435 && p5.mouseY > 300 && p5.mouseY < 310) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+    return false;
+  }
+}
 
-      // p5.rect(155,250, 250, 10);   // H
-      if (p5.mouseX > 155 && p5.mouseX < 405 && p5.mouseY > 250 && p5.mouseY < 260) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+class Container {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+  }
 
-      // p5.rect(400,160,10, 100);    // V
-      // p5.rect(400,160,10, 100);    // V
-      if (p5.mouseX > 400 && p5.mouseX < 410 && p5.mouseY > 160 && p5.mouseY < 260) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+  draw = () => {
+    p5.push();
+    p5.stroke(this.color);
+    p5.strokeWeight(3);
+    p5.line(this.x, this.y, this.x, this.y - 100);
+    p5.line(this.x, this.y, this.x + 100, this.y);
+    p5.line(this.x + 100, this.y, this.x + 100, this.y - 100);
 
-      // p5.rect(430,140,10, 170);    // V
-      // p5.rect(430,140,10, 170);    // V
-      if (p5.mouseX > 430 && p5.mouseX < 440 && p5.mouseY > 140 && p5.mouseY < 310) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+    p5.pop();
+  }
 
-      // p5.rect(320,135, 120, 10);   // H
-      // p5.rect(320,135, 120, 10);   // H
-      if (p5.mouseX > 320 && p5.mouseX < 440 && p5.mouseY > 120 && p5.mouseY < 130) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+  contains(x, y) {
+    if (x > this.x && x < this.x + 100 && y > this.y - 100 && y < this.y) {
+      return true;
+    }
+    return false;
+  }
+}
 
-      // p5.rect(320,160, 90, 10);    // H
-      // p5.rect(320,160, 90, 10);    // H
-      if (p5.mouseX > 320 && p5.mouseX < 410 && p5.mouseY > 160 && p5.mouseY < 170) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
+ p5.star = (x, y, radius1, radius2, npoints) => {
+  let angle = p5.TWO_PI / npoints;
+  let halfAngle = angle / 2.0;
+  p5.beginShape();
+  for (let a = 0; a < p5.TWO_PI; a += angle) {
+    let sx = x + p5.cos(a) * radius2;
+    let sy = y + p5.sin(a) * radius2;
+    p5.vertex(sx, sy);
+    sx = x + p5.cos(a + halfAngle) * radius1;
+    sy = y + p5.sin(a + halfAngle) * radius1;
+    p5.vertex(sx, sy);
+  }
+  p5.endShape(p5.CLOSE);
+}
 
-      // ellipse(250,160, 85);
-      if (p5.dist(250, 160, p5.mouseX, p5.mouseY) < 42.5) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
-
-      // ellipse(165,100, 90);
-      if (p5.dist(165, 100, p5.mouseX, p5.mouseY) < 45) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
-
-      // ellipse(150,200, 97);
-      if (p5.dist(150, 200, p5.mouseX, p5.mouseY) < 48.5) {
-        status = 0;
-        message = "Try again";
-        c = "red";
-      }
-
-      if (status == -1) {
-        c = "0";
-
-        message = "Move the mouse to starting area to play";
-      }
-      p5.textSize(20);
-      p5.fill(c);
-      p5.text(message, p5.width / 2 - 200, p5.height / 2);
-    };
   };
 </script>
 
