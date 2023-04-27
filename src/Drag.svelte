@@ -250,7 +250,7 @@ class Container {
     this.color = color;
   }
 
-  draw = () => {
+  draw() {
     p5.push();
     p5.stroke(this.color);
     p5.strokeWeight(3);
