@@ -17,7 +17,7 @@
     
 // set up function
 // Here, insert yout code of setup function "only"
-p5.createCanvas(600, 600);
+p5.createCanvas(500, 400);
   shapes.push(new Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
   shapes.push(new Shape(p5.width / 3, p5.height - 200, "lightblue", "circle"));
   shapes.push(new Shape(p5.width / 2, p5.height - 200, "green", "star"));
@@ -287,8 +287,13 @@ class Container {
 </script>
 
 <div class="touch-none">
-  <div class="gameCanvas">
+  <div>
     <P5 {sketch} />
   </div>
   <button on:click={resetGame}>Start/Restart</button>
 </div>
+<style>
+  div{
+
+  }
+</style>
