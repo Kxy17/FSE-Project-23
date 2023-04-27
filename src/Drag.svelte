@@ -166,7 +166,7 @@ class Shape {
     this.shape = shape;
   }
 
-  draw = () => {
+  draw() {
     p5.push();
     p5.fill(this.color);
     p5.noStroke();
