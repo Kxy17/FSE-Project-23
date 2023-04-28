@@ -1,6 +1,6 @@
 <script>
   import P5 from "p5-svelte";
-  let resetGame
+  let resetGame, points;
   const sketch = (p5) => {
     let shapes = [];
     let containers = [];
@@ -148,6 +148,7 @@ p5.mouseReleased = () => {
 
   if (shapesInContainers.length == 6) {
     winningMessage = "Congratulations, you have won!";
+    points++;
   } else {
     let remainder = 6 - shapesInContainers.length;
 
