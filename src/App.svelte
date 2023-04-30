@@ -1,5 +1,5 @@
 <script>
-  let menu = "mainMenu", theme, guidesRead=[], pages=[[{title:'test1'}, {title:'test2'}], [], []]
+  let menu = "mainMenu", theme, guidesRead=[], pages=[[{title:'test1', description:'test 1', howTo:'easy', imgs:['', 'https://th.bing.com/th/id/OIP.A-mn7nSruBp2nzOKOEnUOAHaGF?w=237&h=194&c=7&r=0&o=5&dpr=1.3&pid=1.7', 'empty'], rules:['test 1', 'test 2']}, {title:'test2', description:'test 2', benefits:{items:['test 1'], ordered:true}}], [], []]
   theme = 'light'
   import Maze from "./Maze.svelte";
   import Drag from "./Drag.svelte"

@@ -10,7 +10,7 @@ let currentPageNum = 0
 <p>Description: {pages[currentPageNum].description}</p>   
 {/if}
 {#if pages[currentPageNum].howTo}
-<p>How to play: {pages[currentPageNum].howto}</p>
+<p>How to play: {pages[currentPageNum].howTo}</p>
 {/if}
 {#if pages[currentPageNum].imgs}
 {#if pages[currentPageNum].imgs.length > 0}
@@ -26,11 +26,11 @@ let currentPageNum = 0
 {/if}
 {#if pages[currentPageNum].rules}
 <p>Rules:</p>
-<ol>
+<ul>
     {#each pages[currentPageNum].rules as rule}
         <li>{rule}</li>
     {/each}
-</ol>
+</ul>
 {/if}
 {#if pages[currentPageNum].imgs}
 {#if pages[currentPageNum].imgs.length > 2}
