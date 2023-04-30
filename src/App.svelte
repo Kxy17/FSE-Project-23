@@ -1,66 +1,53 @@
 <script>
-  let menu = "mainMenu", mounted = false, theme;
+  let menu = "mainMenu", theme, guidesRead=[], pages=[[{title:'test1'}, {title:'test2'}], [], []]
   theme = 'light'
   import Maze from "./Maze.svelte";
   import Drag from "./Drag.svelte"
   import Key from "./Key.svelte"
+  import Guide from "./Guide.svelte";
   import { onMount } from "svelte";
-  import {register} from './user-management'
+  import Watch from "./Watch.svelte";
+  let games = [{name:'Maze Game', index:1, component:Maze}, {name:'Drag Game', index:2, component:Drag}, {name:'Key Game', index:3, component:Key}];
   onMount(() => {
   let paramString = window.location.href.split('?')[1];
   let queryString = new URLSearchParams(paramString);
   let game = queryString.get('open')
   menu =  game || menu  
-  mounted = true
   })
 </script>
-
 <main class="{theme}">
   {#if menu === "mainMenu"}
   <h1 class="font-mono uppercase font-bold text-pink-500">Mouse Games</h1>
     <div class="grid space-y-5 games">
-      <button on:click={() => (window.location.href = window.location.origin + "?open=mazeGame")} class="{theme} game">Maze Game</button>
-      <button on:click={() => (window.location.href = window.location.origin + "?open=dragGame")} class="{theme} game">Drag Game</button>
-      <button on:click={() => (window.location.href = window.location.origin + "?open=keyGame")} class="{theme} game">Key Game</button>
+      {#each games as game}
+      <button on:click={() => (window.location.href = window.location.origin + `?open=${game.name}`)} class="{theme} game">{game.name}</button>
+      {/each}
     </div>
-  {:else if menu === "mazeGame"}
-    <div class="grid space-y-4 justify-center">
-      <h1 class="font-mono uppercase font-bold text-green-500">Maze Game</h1>
-      <Maze />
-      <button class="{theme}"
-        on:click={() => {
-          menu = "mainMenu";
-          window.location.href = window.location.origin;
-        }}>Back</button
-      >
-    </div>
-  {:else if menu === "dragGame"}
-    <div class="grid space-y-4 justify-center">
-      <h1 class="font-mono uppercase font-bold">Drag Game</h1>
-      <Drag />
-      <button class="{theme}"
-        on:click={() => {
-          menu = "mainMenu";
-          window.location.href = window.location.origin;
-        }}>Back</button
-      >
-    </div>
-    {:else if menu === "keyGame"}
-    <div class="grid space-y-4 justify-center">
-      <h1 class="font-mono uppercase font-bold">Keyboard Game</h1>
-      <Key />
-      <button class="{theme}"
-        on:click={() => {
-          menu = "mainMenu";
-          window.location.href = window.location.origin;
-        }}>Back</button
-      >
-    </div>
-  {/if}
-  {#if theme == 'dark'}
-  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="theme2" on:click={function(){theme='light'}} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
   {:else}
-  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="theme" on:click={function(){theme='dark'}} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    {#each games as game}
+    {#if menu == game.name}
+    <div class="grid space-y-4 justify-center">
+      <h1 class="font-mono uppercase font-bold text-green-500">{game.name}</h1>
+      {#if guidesRead.includes(game.index) || localStorage.getItem((game.index).toString())}
+      <svelte:component this={game.component}/>
+      <button class="{theme}"
+        on:click={() => {
+          menu = "mainMenu";
+          window.location.href = window.location.origin;
+        }}>Back</button
+      >
+      {:else}
+      <Guide pages={pages[game.index-1]}/>
+      <button on:click={function(){guidesRead.push(game.index);guidesRead=guidesRead;localStorage.setItem((game.index).toString(), 'true')}}>done</button>
+      <button class="{theme}"
+        on:click={() => {
+          menu = "mainMenu";
+          window.location.href = window.location.origin;
+        }}>Back</button>
+      {/if}
+    </div>
+    {/if}
+    {/each}
   {/if}
 </main>
 <style>

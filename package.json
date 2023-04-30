@@ -22,6 +22,7 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "firebase": "^9.20.0"
+    "firebase": "^9.20.0",
+    "hash-wasm": "^4.9.0"
   }
 }
