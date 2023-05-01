@@ -1,11 +1,16 @@
 <script>
 import P5 from 'p5-svelte';
+import {time} from './Stopwatch'
+import {start} from './Stopwatch'
+import {reset} from './Stopwatch'
+import {pause} from './Stopwatch'
+import {formatTime} from './Stopwatch'
   let word = '';
-  let words = [];
   let score = 0;
   let wrong = false;
   let selectedKey = "";
-  let keyboard = {keys:[["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L"],["Z","X","C","V","B","N","M"]]}
+  let keyboard = {keys:[["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L"],["Z","X","C","V","B","N","M"]]};
+  let wordsLeft = 10;
   const sketch = (p) => {
     p.setup = () => {
       p.createCanvas(400, 400);
@@ -13,24 +18,28 @@ import P5 from 'p5-svelte';
     p.draw = () => {
       p.background(220);
       p.textAlign(p.CENTER);
-      p.textSize(32);
-      p.text(word, p.width / 2, p.height / 2);
       p.textSize(16);
+      p.text(`Elapsed: ${formatTime($time)}`, p.width/2 , p.height / 2 - 150)
       p.text(`Score: ${score}`, p.width / 2, p.height / 2 + 50);
+      p.text(`Words left: ${wordsLeft}`, p.width / 2, p.height / 2 + 150)
+      if(wordsLeft == 0){
+        p.textSize(25)
+        pause()
+        p.text(`Solid! You finished with:${score} points.`, p.width / 2, p.height / 2)
+        p.text(`In ${formatTime($time)}`, p.width/2, p.height /2 +25)
+      }else{
+        p.textSize(28);
+        p.text(word, p.width / 2, p.height / 2);
+      }
     };
     p.keyTyped = () => {
      checkLetter(p.key)
     };
-    if(words.length < 5){
-      pullWords(50, 4)
-    }
   };
-  pullWords(10,4)
-  function pullWords(amount, length){
-    fetch(`https://random-word-api.herokuapp.com/word?number=${amount}&length=${length}`, {method:'GET'})
+  function pullWord(){
+    fetch(`https://random-word-api.herokuapp.com/word?number=1&length=${Math.floor((Math.random()*8) + 2)}`, {method:'GET'})
     .then((res)=>res.json())
-    .then((data)=>words = data)
-    .then((func)=>word = words[words.length-1])
+    .then((data)=>word = data[0])
   }
   function checkLetter(key){
     selectedKey = key.toUpperCase()
@@ -41,8 +50,8 @@ import P5 from 'p5-svelte';
             score++;
           }
           wrong = false;
-          words.pop();
-          word = words[words.length-1];
+          pullWord()
+          wordsLeft--;
         }
       }else{
         if(!wrong&&score>0){
@@ -51,13 +60,15 @@ import P5 from 'p5-svelte';
         wrong = true
       }
   }
+  pullWord()
+  start()
     </script>
 <div class="touch-none">
   <div class="canvas">
     <P5 {sketch} />
   </div>
   <br>
-  <button class="wordDef">Word Definition</button>
+  <button class="wordDef" on:click={function(){open(`https:www.collinsdictionary.com/us/dictionary/english/${word}`)}}>Word Definition</button>
 </div>
 <div class="keyboard">
   <div class="keyboard__row">
@@ -107,7 +118,6 @@ import P5 from 'p5-svelte';
     height: 100%;
     box-sizing: border-box;
     cursor: pointer;
-    -webkit-user-select: none;
     border: 1px solid #444;
     box-shadow: 0 0.2em 0 0.05em #222;
     border-bottom-color: #555;

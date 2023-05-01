@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc} from "firebase/firestore";
 import { bcrypt, bcryptVerify} from "hash-wasm";
 import { writable } from "svelte/store";
 export const userData = writable({})
+let userId;
 export async function register(username, password, email) {
 let data =  {
   topscores:[],
@@ -11,14 +12,14 @@ let data =  {
 if(username) data.username = username;
   if(email){
     data.id = (await authenticate(email, password)) 
-    userData.set(data)
     await setDoc(doc(db, 'userdata', data.id), data);
+    userId = data.id;
     if(username) await setDoc(doc(db, 'userdata', username), {password:(await generate_hash(password)), link:data.id})
     return {status:200, data:data};
 }else{
   if((await getDoc(doc(db, 'userdata', username))).exists()) return 'user already exists!'
-  userData.set(data)
   await setDoc(doc(db, 'userdata', username), {password:(await generate_hash(password)), data:data})
+  userId = username;
   return 'user created sucessfully'
 }
 }
@@ -26,14 +27,14 @@ export async function signin(username, password, email) {
   if(email){
     return signInWithEmailAndPassword(oauth, email, password)
   .then(async(userCredential) => {
+    userId = userCredential.user.uid;
     let data = (await getDoc(doc(db, 'userdata', userCredential.user.uid))).data()
-    userData.set(data)
     return {status:201, data:data}
   })
 }else{
+  userId = username;
   let data = (await getDoc(doc(db, 'userdata', username))).data()
   if(checkHash(password, data.password)){
-    userData.set(data)
     return {status:203, data:data}
   }else{
     return {status:400, err:'wrong password!'}
@@ -101,4 +102,4 @@ async function checkHash(credential, hash){
   });
   return isValid
 }
-console.log(await link_email('getrectsss@gmail.com', 'testacc', 'testpass'))
+//

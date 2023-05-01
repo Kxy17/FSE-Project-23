@@ -5,8 +5,9 @@
   import Drag from "./Drag.svelte"
   import Key from "./Key.svelte"
   import Guide from "./Guide.svelte";
+  import Signin from "./signin.svelte";
+  import {userData} from './user-management'
   import { onMount } from "svelte";
-  import Watch from "./Watch.svelte";
   let games = [{name:'Maze Game', index:1, component:Maze}, {name:'Drag Game', index:2, component:Drag}, {name:'Key Game', index:3, component:Key}];
   onMount(() => {
   let paramString = window.location.href.split('?')[1];

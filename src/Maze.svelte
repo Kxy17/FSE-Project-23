@@ -1,6 +1,11 @@
 <script>
   import P5 from "p5-svelte";
-  let message = "", randomMessages = ['Keep going', 'You got this', 'Awesome', 'Watch out'], messageDis = false, game;
+  import {time} from './Stopwatch'
+  import {start} from './Stopwatch'
+  import {reset} from './Stopwatch'
+  import {pause} from './Stopwatch'
+  import {formatTime} from './Stopwatch'
+  let message = "", randomMessages = ['Keep going', 'You got this', 'Awesome', 'Watch out'], messageDis = false, game, score = 0;
   function randomMessage(){
     if(game) return
     message = randomMessages[Math.floor(Math.random() * (randomMessages.length))];
@@ -143,8 +148,10 @@
       }
     };
   };
+  start()
 </script>
-
+<p>Score: {score}</p>
+<p>Elapsed: {formatTime($time)}</p>
 <div class="touch-none">
   <div>
     <P5 {sketch} />
