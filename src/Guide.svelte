@@ -10,7 +10,12 @@ let currentPageNum = 0
 <p>Description: {pages[currentPageNum].description}</p>   
 {/if}
 {#if pages[currentPageNum].howTo}
-<p>How to play: {pages[currentPageNum].howTo}</p>
+<p>How to play:</p>
+<ul>
+    {#each pages[currentPageNum].howTo as point}
+        <li>{point}</li>
+    {/each}
+</ul>
 {/if}
 {#if pages[currentPageNum].imgs}
 {#if pages[currentPageNum].imgs.length > 0}
@@ -45,19 +50,11 @@ let currentPageNum = 0
 {/if}
 {/if}
 {#if pages[currentPageNum].benefits}
-{#if pages[currentPageNum].benefits.ordered}
-<ol>
-    {#each pages[currentPageNum].benefits.items as item}
-        <li>{item}</li>        
-    {/each}
-</ol>
-{:else}
 <ul>
     {#each pages[currentPageNum].benefits.items as item}
         <li>{item}</li>        
     {/each}
 </ul>
-{/if}
 {/if}
 {#if currentPageNum > 0 && pages.length > 1}
 <button on:click={function(){currentPageNum--}}>previous</button>

@@ -105,15 +105,11 @@ if (DraggedShape) {
     }
   }
 }
-
-
-
 p5.mouseReleased = () => {
   // Check if shape is dropped in container
   if (!DraggedShape) {
     return;
   }
-
   let inside = false;
   let mtch = false;
   for (let container of containers) {
