@@ -63,7 +63,7 @@ let currentPageNum = 0
 {/if}
 <style>
     
-     button{
-    background-color: #732C60;
-  }
+button{
+    background-color: #B47F75;
+}
 </style>
