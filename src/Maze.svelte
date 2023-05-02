@@ -5,7 +5,13 @@
   import {reset} from './Stopwatch'
   import {pause} from './Stopwatch'
   import {formatTime} from './Stopwatch'
-  let message = "", randomMessages = ['Keep going', 'You got this', 'Awesome', 'Watch out'], messageDis = false, game, score = 0;
+  let message = "", randomMessages = ['Keep going', 'You got this', 'Awesome', 'Watch out'], messageDis = false, game, score = 0, multiplier=1;
+  function shuffleAnimation(){
+    let num = ((Math.floor(Math.random() * 100)))
+    if(num == 0) num+=33 
+    message = 'Magic multiplier: ' + num
+    multiplier = num
+  }
   function randomMessage(){
     if(game) return
     message = randomMessages[Math.floor(Math.random() * (randomMessages.length))];
@@ -32,6 +38,8 @@
         p5.strokeWeight(3);
         p5.stroke("skyblue");
         p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+        //point system
+        score = Math.ceil(((((p5.mouseX - 39) + (p5.mouseY - 20))*-1) + 600)/60)
       }
       // Reset background
       if (p5.mouseX > 178 && p5.mouseX < 278 && p5.mouseY > 375 && p5.mouseY < 405) {
@@ -78,7 +86,28 @@
         c = "green";
         p5.noStroke();
         game = true;
-        message = "Congrats, You Win";
+        message = "Congrats, You Win!";
+        setTimeout(shuffleAnimation, 150)
+        setTimeout(shuffleAnimation, 250)
+        setTimeout(shuffleAnimation, 350)
+        setTimeout(shuffleAnimation, 450)
+        setTimeout(shuffleAnimation, 550)
+        setTimeout(shuffleAnimation, 650)
+        setTimeout(shuffleAnimation, 750)
+        setTimeout(shuffleAnimation, 850)
+        setTimeout(shuffleAnimation, 950)
+        setTimeout(shuffleAnimation, 1050)
+        setTimeout(shuffleAnimation, 1150)
+        setTimeout(shuffleAnimation, 1250)
+        setTimeout(shuffleAnimation, 1350)
+        setTimeout(shuffleAnimation, 1450)
+        setTimeout(shuffleAnimation, 1550)
+        setTimeout(shuffleAnimation, 1650)
+        setTimeout(shuffleAnimation, 1750)
+        setTimeout(shuffleAnimation, 1850)
+        setTimeout(shuffleAnimation, 1950)
+        setTimeout(shuffleAnimation, 2050)
+        setTimeout(function(){message = "Jackpot! You won 10 x " + multiplier + " = " + multiplier*10 + " points"}, 2450)
       }
       // lose cases
       // outside canvas
@@ -138,7 +167,9 @@
         status = 0;
       }
       if(status == 0){
-        message = "Game over, Move the mouse to starting area to play";
+        score -= 5
+        if(score < 0) score = 0
+        message = "Game over! Score: " + score;
         c = "red";
         game = true;
       }
@@ -156,7 +187,7 @@
   <div>
     <P5 {sketch} />
   </div>
-  <p>{message}!</p>
+  <p>{message}</p>
 </div>
 <style>
    button{
