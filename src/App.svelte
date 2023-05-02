@@ -87,7 +87,7 @@
   });
 </script>
 <main>
-  {#if true} <!--$userData.data-->
+  {#if $userData.data}
     {#if menu === "mainMenu"}
       <h1 class="font-mono uppercase font-bold text-black-500">Mouse Games</h1>
       <div class="grid space-y-5 games">

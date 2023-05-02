@@ -87,6 +87,7 @@
         p5.noStroke();
         game = true;
         message = "Congrats, You Win!";
+        reset();
         setTimeout(shuffleAnimation, 150)
         setTimeout(shuffleAnimation, 250)
         setTimeout(shuffleAnimation, 350)

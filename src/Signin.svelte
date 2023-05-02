@@ -8,7 +8,7 @@
       if(username=='') return
       if(validateEmail(username)){logon = await signin(false, password, username)}
       else{logon = await signin(username, password, false)}
-      if(logon.status > 299) return message = "Invalid Credentials"
+      if(logon.status > 299) {localStorage.clear();return message = "Invalid Credentials"}
       localStorage.setItem('username', username)
       localStorage.setItem('password', password) 
       userData.set(logon)
@@ -36,7 +36,7 @@
   const regexExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
   return regexExp.test(email);
   }
-  async function autolog(){
+async function autolog(){
   if(localStorage.getItem('username')){
     username = localStorage.getItem('username')
     password = localStorage.getItem('password')
@@ -45,6 +45,7 @@
 }
 autolog()
 </script>
+{#if !localStorage.getItem('username')}
 <div class="register-form">
     <div class="form">
       {#if account}
@@ -71,12 +72,16 @@ autolog()
         <p>{message}</p>      
         <button type="submit">Create</button>
       </form>
-      <button on:click={function(){account = true}}>Already Registered?
+      <button on:click={function(){account = true}}>
+        Already Registered?
         <p>Sign in</p>
         </button>
       {/if}
     </div>
   </div>
+  {:else}
+  <p>loading...</p>
+  {/if}
   <style>
     .register-form {
   height: 450px;
