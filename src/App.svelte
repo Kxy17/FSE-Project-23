@@ -1,4 +1,5 @@
 <script>
+  if(!localStorage.getItem('points')) localStorage.setItem('points', '0')
   let menu = "mainMenu",
     guidesRead = [],
     pages = [
@@ -102,7 +103,8 @@
         {#if $userData.data.username}
       <p class="username">Welcome, {($userData.data.username).charAt(0).toUpperCase()+($userData.data.username).slice(1)}</p>
       {/if}
-      <button on:click={function(){localStorage.clear();window.location.href=window.location.href}} class="logout">logout</button>
+      <button on:click={function(){localStorage.removeItem('username');window.location.href=window.location.href}} class="logout">logout</button>
+      <p>Points: {localStorage.getItem('points')}</p>
       </div>
     {:else}
       {#each games as game}

@@ -172,6 +172,7 @@
 
       if (shapesInContainers.length == 6) {
         winningMessage = "Congratulations, you have won!";
+        localStorage.setItem('points', (parseInt('points') + (points)).toString())
         pause();
         points++;
       } else {

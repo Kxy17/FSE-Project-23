@@ -87,7 +87,6 @@
         p5.noStroke();
         game = true;
         message = "Congrats, You Win!";
-        reset();
         setTimeout(shuffleAnimation, 150)
         setTimeout(shuffleAnimation, 250)
         setTimeout(shuffleAnimation, 350)
@@ -109,6 +108,7 @@
         setTimeout(shuffleAnimation, 1950)
         setTimeout(shuffleAnimation, 2050)
         setTimeout(function(){message = "Jackpot! You won " + Math.ceil(10/($time/3000)) + " x " + multiplier + " = " + multiplier*(Math.ceil(10/($time/3000))) + " points"}, 2450)
+        localStorage.setItem('points', ((multiplier*(Math.ceil(10/($time/3000))))).toString())
       }
       // lose cases
       // outside canvas
