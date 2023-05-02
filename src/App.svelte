@@ -117,6 +117,7 @@
               <button
                 on:click={function () {
                   guidesRead.push(game.index);
+                  guidesRead = guidesRead;
                   localStorage.setItem(game.index.toString(), "true");
                 }}>done</button
               >

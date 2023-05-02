@@ -176,7 +176,7 @@
         points++;
       } else {
         let remainder = 6 - shapesInContainers.length;
-
+        points = shapesInContainers.length
         winningMessage = "You have only " + remainder + " remaining";
       }
 
@@ -193,7 +193,7 @@
 
       draw() {
         p5.push();
-        p5.fill(this.color);
+        p5.fill(this.color); 
         p5.noStroke();
         if (this.shape === "triangle") {
           p5.triangle(
@@ -311,7 +311,6 @@
   };
   start();
 </script>
-
 <p>Score: {points}</p>
 <p>Elapsed: {formatTime($time)}</p>
 <div class="touch-none">
