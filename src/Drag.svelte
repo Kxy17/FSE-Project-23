@@ -320,3 +320,8 @@
   </div>
   <button on:click={resetGame}>Start/Restart</button>
 </div>
+<style>
+   button{
+    background-color: blue;
+  }
+</style>

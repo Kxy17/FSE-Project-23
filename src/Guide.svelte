@@ -4,13 +4,12 @@ export let pages;
 let currentPageNum = 0
 </script>
 {#if pages[currentPageNum].title}
-    <p>Game: {pages[currentPageNum].title}</p>
+    <p>{pages[currentPageNum].title}</p>
 {/if}
 {#if pages[currentPageNum].description}
-<p>Description: {pages[currentPageNum].description}</p>   
+<p>{pages[currentPageNum].description}</p>   
 {/if}
 {#if pages[currentPageNum].howTo}
-<p>How to play:</p>
 <ul>
     {#each pages[currentPageNum].howTo as point}
         <li>{point}</li>
@@ -62,3 +61,8 @@ let currentPageNum = 0
 {#if pages.length > currentPageNum + 1}
 <button on:click={function(){currentPageNum++}}>next</button>
 {/if}
+<style>
+     button{
+    background-color: blue;
+  }
+</style>

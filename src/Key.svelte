@@ -138,4 +138,7 @@ import {formatTime} from './Stopwatch'
 .wordDef{ 
   background-color: #fff;
 }
+button{
+    background-color: blue;
+  }
 </style>

@@ -1,20 +1,64 @@
 <script>
+  let username, password, wrongPass=false, logon, account = true, email;
     import {userData} from './user-management'
+    import {signin} from './user-management'
+    import {register} from './user-management'
+    async function login(){
+      if(username=='') return
+      if(validateEmail(username)){logon = await signin(false, password, username)}
+      else{logon = await signin(username, password, false)}
+      userData.set(logon)
+    }
+    async function create(){
+      if(username == '' && email == '') return alert('You must create an account using either an email or username.')
+      if(username != ""){
+        if(email != ""){
+          logon = await register(username, password, email)
+        }else{
+          logon = await register(username, password, false)
+        }
+      }else{
+        if(email != ""){
+          logon = await register(false, password, email)
+        }
+      }
+      userData.set(logon)
+    }
+    function validateEmail(email) {
+  const regexExp = /^ [a-zA-Z0-9.!#$%&'*+/=?^_` {|}~-]+@ [a-zA-Z0-9] (?: [a-zA-Z0-9-] {0,61} [a-zA-Z0-9])? (?:. [a-zA-Z0-9] (?: [a-zA-Z0-9-] {0,61} [a-zA-Z0-9])?)*$/gi;
+  return regexExp.test(email);
+  }
 </script>
 <div class="register-form">
     <div class="form">
+      {#if account}
       <div class="form-heading">
-        <h2>sign in</h2>
+        <h2>Sign in</h2>
       </div>
-      <form class="login-page">
-        <input type="email" 
-               placeholder="E-mail" required/>
-        <input type="password" placeholder="password" required/>      
-        <button>login</button>
+      <form class="login-page" on:submit={function(submit){submit.preventDefault();login()}}>
+        <input type="text" placeholder="Email or Username" bind:value={username} required/>
+        <input type="password" placeholder="password" bind:value={password} required/>      
+        <button type="submit">Log in</button>
+        <p></p>
       </form>
-      <p class="message">Not registered?
-        <a href="#">Create an account</a>
-      </p>
+      <button on:click={function(){account = false}}>Not registered?
+        <p>Create an account</p>
+        </button>
+      {:else}
+      <div class="form-heading">
+        <h2>Register</h2>
+      </div>
+      <form class="login-page" on:submit={function(submit){submit.preventDefault();create()}}>
+        <input type="text" placeholder="Username (optional)" bind:value={username}/>
+        <input type="text" placeholder="Email (optional)" bind:value={email}/>
+        <input type="password" placeholder="password" bind:value={password} required/>      
+        <button type="submit">Create</button>
+        <p></p>
+      </form>
+      <button on:click={function(){account = true}}>Already Registered?
+        <p>Sign in</p>
+        </button>
+      {/if}
     </div>
   </div>
   <style>
@@ -77,4 +121,7 @@
   color: #11355C;
   text-decoration: none;
 }
+button{
+    background-color: blue;
+  }
   </style>

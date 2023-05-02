@@ -31,9 +31,14 @@ export async function signin(username, password, email) {
     let data = (await getDoc(doc(db, 'userdata', userCredential.user.uid))).data()
     return {status:201, data:data}
   })
+  .catch((err) => {
+    return {status:406, err:err}
+  })
 }else{
   userId = username;
-  let data = (await getDoc(doc(db, 'userdata', username))).data()
+  let login = (await getDoc(doc(db, 'userdata', username)))
+  if(!login.exists()) return 'User Doesnt exist.'
+  let data = login.data()
   if(checkHash(password, data.password)){
     return {status:203, data:data}
   }else{
