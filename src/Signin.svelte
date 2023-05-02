@@ -35,6 +35,14 @@
   const regexExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
   return regexExp.test(email);
   }
+  async function autolog(){
+  if(localStorage.getItem('username')){
+    username = localStorage.getItem('username')
+    password = localStorage.getItem('password')
+    await login()
+  }
+}
+autolog()
 </script>
 <div class="register-form">
     <div class="form">
