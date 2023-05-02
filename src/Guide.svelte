@@ -62,7 +62,8 @@ let currentPageNum = 0
 <button on:click={function(){currentPageNum++}}>next</button>
 {/if}
 <style>
+    
      button{
-    background-color: blue;
+    background-color: #732C60;
   }
 </style>

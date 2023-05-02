@@ -16,7 +16,7 @@
     let c
     p5.setup = () => {
       p5.createCanvas(450, 400);
-      p5.background("pink");
+      p5.background("#E9DABC");
     };
     p5.draw = () => {
       // Start button
@@ -35,7 +35,7 @@
       }
       // Reset background
       if (p5.mouseX > 178 && p5.mouseX < 278 && p5.mouseY > 375 && p5.mouseY < 405) {
-        p5.background("pink");
+        p5.background("#E9DABC");
       }
       p5.noStroke();
       // Starting area

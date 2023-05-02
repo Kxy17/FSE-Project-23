@@ -34,7 +34,7 @@
       );
       shapes.push(
         new Shape(
-          (7 * p5.width) / 8,
+          ((7 * p5.width) / 7.4),
           p5.height - 200,
           "lightblue",
           "semicircle"
@@ -100,7 +100,7 @@
       // draw function
       // Here, insert yout code of draw function "only"
       // Draw shapes
-      p5.background("white");
+      p5.background("#E9DABC");
 
       shapes.forEach((shape) => shape.draw());
 
@@ -322,6 +322,6 @@
 </div>
 <style>
    button{
-    background-color: blue;
+    background-color: #B47F75;
   }
 </style>

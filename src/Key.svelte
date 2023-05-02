@@ -14,9 +14,10 @@ import {formatTime} from './Stopwatch'
   const sketch = (p) => {
     p.setup = () => {
       p.createCanvas(400, 400);
+      
     };
     p.draw = () => {
-      p.background(220);
+      p.background("#E9DABC");
       p.textAlign(p.CENTER);
       p.textSize(16);
       p.text(`Elapsed: ${formatTime($time)}`, p.width/2 , p.height / 2 - 150)
@@ -107,15 +108,15 @@ import {formatTime} from './Stopwatch'
 }
 .keyboard__row > * {
     position: relative;
-    background: #333;
+    background: #B47F75;
     text-align: center;
-    color: #eee;
+    color: #000;
     float: left;
     border-radius: 0.3em;
     margin: 0.2em;
     padding: 0.2em;
-    width: 3.3em;
-    height: 100%;
+    width: 5em;
+    height: 95%;
     box-sizing: border-box;
     cursor: pointer;
     border: 1px solid #444;
@@ -136,9 +137,10 @@ import {formatTime} from './Stopwatch'
     text-align: center;
 }
 .wordDef{ 
-  background-color: #fff;
+  color: #000;
+  background-color: #B47F75;
 }
 button{
-    background-color: blue;
+    background-color: #B47F75;
   }
 </style>
