@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
     let interval;
     let running = false;
     export function formatTime(time){
-      return time>60*1000?(Math.floor(time / 1000)+' Minutes '+Math.floor((time-60) / 60000)+' Second(s)'):(Math.floor(time / 1000) + ' Second(s)')  
+      return "Hours: " + Math.floor((time / (1000 * 60 * 60)) % 24) + " Minutes: " + Math.floor((time / (1000 * 60)) % 60) + " Seconds: " + Math.floor((time / 1000) % 60);
     };
     export function start() {
       if (!running) {

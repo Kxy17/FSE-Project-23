@@ -107,7 +107,7 @@
         setTimeout(shuffleAnimation, 1850)
         setTimeout(shuffleAnimation, 1950)
         setTimeout(shuffleAnimation, 2050)
-        setTimeout(function(){message = "Jackpot! You won 10 x " + multiplier + " = " + multiplier*10 + " points"}, 2450)
+        setTimeout(function(){message = "Jackpot! You won " + Math.ceil(10/($time/3000)) + " x " + multiplier + " = " + multiplier*(Math.ceil(10/($time/3000))) + " points"}, 2450)
       }
       // lose cases
       // outside canvas
