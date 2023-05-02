@@ -1,16 +1,23 @@
 <script>
-  let username, password, wrongPass=false, logon, account = true, email;
+  let username, password, logon, account = true, email, message='';
     import {userData} from './user-management'
     import {signin} from './user-management'
     import {register} from './user-management'
     async function login(){
+      message = ''
       if(username=='') return
       if(validateEmail(username)){logon = await signin(false, password, username)}
       else{logon = await signin(username, password, false)}
+      if(logon.status > 299) return message = "Invalid Credentials" 
       userData.set(logon)
     }
     async function create(){
-      if(username == '' && email == '') return alert('You must create an account using either an email or username.')
+      message = ''
+      if(validateEmail(username)) return message = 'Username cannot be an email.'
+      if(email!=''&&!validateEmail(email)) return message = 'Invalid email.'
+      if(username == '' && email == '') return message = 'You must create an account using either an email or username.'
+      if(username.length < 4) return message = 'Username must be at least 4 letters.'
+      if(password.length < 6) return message = 'Password must be at least 6 letters.'
       if(username != ""){
         if(email != ""){
           logon = await register(username, password, email)
@@ -25,7 +32,7 @@
       userData.set(logon)
     }
     function validateEmail(email) {
-  const regexExp = /^ [a-zA-Z0-9.!#$%&'*+/=?^_` {|}~-]+@ [a-zA-Z0-9] (?: [a-zA-Z0-9-] {0,61} [a-zA-Z0-9])? (?:. [a-zA-Z0-9] (?: [a-zA-Z0-9-] {0,61} [a-zA-Z0-9])?)*$/gi;
+  const regexExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
   return regexExp.test(email);
   }
 </script>
@@ -37,9 +44,9 @@
       </div>
       <form class="login-page" on:submit={function(submit){submit.preventDefault();login()}}>
         <input type="text" placeholder="Email or Username" bind:value={username} required/>
-        <input type="password" placeholder="password" bind:value={password} required/>      
+        <input type="password" placeholder="password" bind:value={password} required/>     
+        <p>{message}</p> 
         <button type="submit">Log in</button>
-        <p></p>
       </form>
       <button on:click={function(){account = false}}>Not registered?
         <p>Create an account</p>
@@ -51,9 +58,9 @@
       <form class="login-page" on:submit={function(submit){submit.preventDefault();create()}}>
         <input type="text" placeholder="Username (optional)" bind:value={username}/>
         <input type="text" placeholder="Email (optional)" bind:value={email}/>
-        <input type="password" placeholder="password" bind:value={password} required/>      
+        <input type="password" placeholder="password" bind:value={password} required/>
+        <p>{message}</p>      
         <button type="submit">Create</button>
-        <p></p>
       </form>
       <button on:click={function(){account = true}}>Already Registered?
         <p>Sign in</p>
@@ -65,10 +72,12 @@
     .register-form {
   height: 450px;
   width: 400px;
+  margin: auto;
   font-family: sans-serif;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   border-radius: 3px;
   overflow: hidden;
+  margin-top: calc(75vh - 450px);
+  border-radius: 25px;
 }
 .form {
     width: 90%;

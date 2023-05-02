@@ -6,8 +6,8 @@
   import Drag from "./Drag.svelte"
   import Key from "./Key.svelte"
   import Guide from "./Guide.svelte";
-  // import Signin from "./Signin.svelte";
-  // import {userData} from './user-management'
+  import Signin from "./Signin.svelte";
+  import {userData} from './user-management'
   import { onMount } from "svelte";
   let games = [{name:'Maze Game', index:1, component:Maze}, {name:'Drag Game', index:2, component:Drag}, {name:'Key Game', index:3, component:Key}];
   onMount(() => {
@@ -18,7 +18,7 @@
   })
 </script>
 <main>
-  <!-- {#if $userData.data} -->
+  {#if $userData.data}
   {#if menu === "mainMenu"}
   <h1 class="font-mono uppercase font-bold text-black-500">Mouse Games</h1>
     <div class="grid space-y-5 games">
@@ -51,9 +51,9 @@
     {/if}
     {/each}
   {/if}
-  <!-- {:else} -->
-  <!-- <Signin/> -->
-  <!-- {/if} -->
+  {:else}
+  <Signin/>
+  {/if}
 </main>
 <style>
 main{

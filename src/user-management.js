@@ -16,7 +16,8 @@ if(username) data.username = username;
     userId = data.id;
     if(username) await setDoc(doc(db, 'userdata', username), {password:(await generate_hash(password)), link:data.id})
     return {status:200, data:data};
-}else{
+}
+if(username){
   if((await getDoc(doc(db, 'userdata', username))).exists()) return 'user already exists!'
   await setDoc(doc(db, 'userdata', username), {password:(await generate_hash(password)), data:data})
   userId = username;
@@ -36,14 +37,10 @@ export async function signin(username, password, email) {
   })
 }else{
   userId = username;
-  let login = (await getDoc(doc(db, 'userdata', username)))
-  if(!login.exists()) return 'User Doesnt exist.'
+  let login = (await getDoc(doc(db, 'userdata', userId)))
   let data = login.data()
-  if(checkHash(password, data.password)){
-    return {status:203, data:data}
-  }else{
-    return {status:400, err:'wrong password!'}
-  }
+  if(!login.exists() || !(await checkHash(password, data.password))) return {status:407, msg:'Invalid User/Password.'}
+  return {status:203, data:data}
 }
 }
 export async function password_reset(email){
