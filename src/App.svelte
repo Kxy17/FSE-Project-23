@@ -99,6 +99,10 @@
             class="game">{game.name}</button
           >
         {/each}
+        {#if $userData.data.username}
+      <p class="username">Welcome, {($userData.data.username).charAt(0).toUpperCase()+($userData.data.username).slice(1)}</p>
+      {/if}
+      <button on:click={function(){localStorage.clear();window.location.href=window.location.href}} class="logout">logout</button>
       </div>
     {:else}
       {#each games as game}
@@ -157,5 +161,8 @@
   }
   button {
     background-color: #b47f75;
+  }
+  .logout{
+    background-color: transparent;
   }
 </style>

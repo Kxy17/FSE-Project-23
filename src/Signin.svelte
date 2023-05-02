@@ -22,14 +22,18 @@
       if(username != ""){
         if(email != ""){
           logon = await register(username, password, email)
+          localStorage.setItem('username', email)
         }else{
           logon = await register(username, password, false)
+          localStorage.setItem('username', username)
         }
       }else{
         if(email != ""){
           logon = await register(false, password, email)
+          localStorage.setItem('username', email)
         }
       }
+      localStorage.setItem('password', password) 
       userData.set(logon)
     }
     function validateEmail(email) {
