@@ -8,13 +8,14 @@
       if(username=='') return
       if(validateEmail(username)){logon = await signin(false, password, username)}
       else{logon = await signin(username, password, false)}
-      if(logon.status > 299) return message = "Invalid Credentials" 
+      if(logon.status > 299) return message = "Invalid Credentials"
+      localStorage.setItem('username', username)
+      localStorage.setItem('password', password) 
       userData.set(logon)
     }
     async function create(){
       message = ''
       if(validateEmail(username)) return message = 'Username cannot be an email.'
-      if(email!=''&&!validateEmail(email)) return message = 'Invalid email.'
       if(username == '' && email == '') return message = 'You must create an account using either an email or username.'
       if(username.length < 4) return message = 'Username must be at least 4 letters.'
       if(password.length < 6) return message = 'Password must be at least 6 letters.'

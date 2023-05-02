@@ -8,7 +8,6 @@ import {formatTime} from './Stopwatch'
   let word = '';
   let score = 0;
   let wrong = false;
-  let selectedKey = "";
   let keyboard = {keys:[["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L"],["Z","X","C","V","B","N","M"]]};
   let wordsLeft = 10;
   const sketch = (p) => {
@@ -38,12 +37,11 @@ import {formatTime} from './Stopwatch'
     };
   };
   function pullWord(){
-    fetch(`https://random-word-api.herokuapp.com/word?number=1&length=${Math.floor((Math.random()*8) + 2)}`, {method:'GET'})
+    fetch(`https://random-word-api.herokuapp.com/word?number=1&length=${Math.floor(((Math.random()*8)) + 2)}`, {method:'GET'})
     .then((res)=>res.json())
     .then((data)=>word = data[0])
   }
   function checkLetter(key){
-    selectedKey = key.toUpperCase()
     if (key.toLowerCase() === word.charAt(0)) {
         word = word.substring(1);
         if (word.length === 0) {
@@ -142,5 +140,5 @@ import {formatTime} from './Stopwatch'
 }
 button{
     background-color: #B47F75;
-  }
+}
 </style>

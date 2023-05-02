@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
-
-    export let time = writable(0);
+  export let time = writable(0);
     let interval;
     let running = false;
     export function formatTime(time){
