@@ -108,7 +108,7 @@
         setTimeout(shuffleAnimation, 1950)
         setTimeout(shuffleAnimation, 2050)
         setTimeout(function(){message = "Jackpot! You won " + Math.ceil(10/($time/3000)) + " x " + multiplier + " = " + multiplier*(Math.ceil(10/($time/3000))) + " points"}, 2450)
-        localStorage.setItem('points', ((multiplier*(Math.ceil(10/($time/3000))))).toString())
+        localStorage.setItem('points', (parseFloat(localStorage.getItem('points')) + (multiplier*(Math.ceil(10/($time/3000))))).toString())
       }
       // lose cases
       // outside canvas

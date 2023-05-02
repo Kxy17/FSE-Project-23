@@ -27,7 +27,7 @@ import {formatTime} from './Stopwatch'
         pause()
         p.text(`Solid! You finished with:${score} points.`, p.width / 2, p.height / 2)
         p.text(`In ${formatTime($time)}`, p.width/2, p.height /2 +25)
-        localStorage.setItem('points', (parseInt('points') + (10)).toString())
+        localStorage.setItem('points', (parseFloat(localStorage.getItem('points')) + (10)).toString())
       }else{
         p.textSize(28);
         p.text(word, p.width / 2, p.height / 2);
