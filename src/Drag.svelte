@@ -2,7 +2,6 @@
   import P5 from "p5-svelte";
   import { time } from "./Stopwatch";
   import { start } from "./Stopwatch";
-  import { reset } from "./Stopwatch";
   import { pause } from "./Stopwatch";
   import { formatTime } from "./Stopwatch";
   let resetGame, points;
@@ -15,11 +14,8 @@
     let shapesInContainers = [];
     let winningMessage = "";
 
-    // your constants already has been declared by me ..
-
     p5.setup = () => {
       // set up function
-      // Here, insert yout code of setup function "only"
       p5.createCanvas(500, 400);
       shapes.push(new Shape(p5.width / 6, p5.height - 200, "red", "triangle"));
       shapes.push(
@@ -34,7 +30,7 @@
       );
       shapes.push(
         new Shape(
-          ((7 * p5.width) / 7.4),
+          (7 * p5.width) / 7.4,
           p5.height - 200,
           "lightblue",
           "semicircle"
@@ -98,7 +94,6 @@
 
     p5.draw = () => {
       // draw function
-      // Here, insert yout code of draw function "only"
       // Draw shapes
       p5.background("#E9DABC");
 
@@ -172,12 +167,15 @@
 
       if (shapesInContainers.length == 6) {
         winningMessage = "Congratulations, you have won!";
-        localStorage.setItem('points', (parseInt(localStorage.getItem('points')) + (points)).toString())
+        localStorage.setItem(
+          "points",
+          (parseInt(localStorage.getItem("points")) + points).toString()
+        );
         pause();
         points++;
       } else {
         let remainder = 6 - shapesInContainers.length;
-        points = shapesInContainers.length
+        points = shapesInContainers.length;
         winningMessage = "You have only " + remainder + " remaining";
       }
 
@@ -194,7 +192,7 @@
 
       draw() {
         p5.push();
-        p5.fill(this.color); 
+        p5.fill(this.color);
         p5.noStroke();
         if (this.shape === "triangle") {
           p5.triangle(
@@ -312,6 +310,7 @@
   };
   start();
 </script>
+
 <p>Score: {points}</p>
 <p>Elapsed: {formatTime($time)}</p>
 <div class="touch-none">
@@ -320,8 +319,9 @@
   </div>
   <button on:click={resetGame}>Start/Restart</button>
 </div>
+
 <style>
-   button{
-    background-color: #B47F75;
+  button {
+    background-color: #b47f75;
   }
 </style>

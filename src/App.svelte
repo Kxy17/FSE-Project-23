@@ -1,5 +1,5 @@
 <script>
-  if(!localStorage.getItem('points')) localStorage.setItem('points', '0')
+  if (!localStorage.getItem("points")) localStorage.setItem("points", "0");
   let menu = "mainMenu",
     guidesRead = [],
     pages = [
@@ -87,6 +87,7 @@
     menu = game || menu;
   });
 </script>
+
 <main>
   {#if $userData.data}
     {#if menu === "mainMenu"}
@@ -101,10 +102,19 @@
           >
         {/each}
         {#if $userData.data.username}
-      <p class="username">Welcome, {($userData.data.username).charAt(0).toUpperCase()+($userData.data.username).slice(1)}</p>
-      {/if}
-      <button on:click={function(){localStorage.removeItem('username');window.location.href=window.location.href}} class="logout">logout</button>
-      <p>Points: {localStorage.getItem('points')}</p>
+          <p class="username">
+            Welcome, {$userData.data.username.charAt(0).toUpperCase() +
+              $userData.data.username.slice(1)}
+          </p>
+        {/if}
+        <button
+          on:click={function () {
+            localStorage.removeItem("username");
+            window.location.href = window.location.href;
+          }}
+          class="logout">logout</button
+        >
+        <p>Points: {localStorage.getItem("points")}</p>
       </div>
     {:else}
       {#each games as game}
@@ -164,7 +174,7 @@
   button {
     background-color: #b47f75;
   }
-  .logout{
+  .logout {
     background-color: transparent;
   }
 </style>
